@@ -111,10 +111,10 @@ myresult = mycursor.fetchall()
 for x in myresult:
  	print(x)
 
-#	Insert a record.
+#	Insert a record misaligned
 
-sql = "INSERT INTO " + str(dbNamePws) + " (name, address) VALUES (%s, %s)"
-val = ("John", "Highway 21")
+sql = "INSERT INTO " + str(dbNamePws) + " (category, entry, password, misc1, misc2) VALUES (%s, %s, %s, %s, %s)"
+val = ("none", "www.example.com", "8981555aaa", "none", "none")
 mycursor.execute(sql, val)
 mydb.commit()
 print(mycursor.rowcount, "record inserted.")			
@@ -128,4 +128,3 @@ myresult = mycursor.fetchall()
 
 for x in myresult:
  	print(x)
-
