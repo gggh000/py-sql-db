@@ -111,5 +111,21 @@ myresult = mycursor.fetchall()
 for x in myresult:
  	print(x)
 
-			
+#	Insert a record.
+
+sql = "INSERT INTO " + str(dbNamePws) + " (name, address) VALUES (%s, %s)"
+val = ("John", "Highway 21")
+mycursor.execute(sql, val)
+mydb.commit()
+print(mycursor.rowcount, "record inserted.")			
+
+#	Re-displaying records from table.
+
+mycursor = mydb.cursor()
+print("Selecting records and displaying tables from ", dbNamePws)
+mycursor.execute("SELECT * FROM " + dbNamePws + "")
+myresult = mycursor.fetchall()
+
+for x in myresult:
+ 	print(x)
 
