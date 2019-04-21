@@ -106,6 +106,7 @@ for x in mycursor:
 
     if re.search(dbNamePwsTbl, str(x)):
         print("Table", x, " is found.")
+        presenceTable = 1
         break
 
 #   Create the table if it does not exist.
@@ -114,7 +115,7 @@ if not presenceTable:
     try:
         print("Table does not exist. Creating a table with primary keys.")
         mycursor.execute("CREATE TABLE " + dbNamePwsTbl + " (id INT AUTO_INCREMENT PRIMARY KEY, \
-            index INT, \
+            idx INT, \
             category VARCHAR(255), \
             entry VARCHAR(255), \
             password VARCHAR (255), \
@@ -123,6 +124,7 @@ if not presenceTable:
             misc3 VARCHAR(255))")
     except Exception as msg:
         print(msg)
+        exit(1)
 
 ''' Commented out because of logic issues.
 
@@ -147,7 +149,7 @@ for x in myresult:
 
 #    Insert a record by defining the columns.
 
-sql = "INSERT INTO " + str(dbNamePwsTbl) + " (category, index, entry, password, misc1, misc2, misc3) VALUES (%s, %s, %s, %s, %s, %s)"
+sql = "INSERT INTO " + str(dbNamePwsTbl) + " (category, idx, entry, password, misc1, misc2, misc3) VALUES (%s, %s, %s, %s, %s, %s)"
 val = ("none", "none", "www.example.com", "8981555aaa", "none", "none", "none")
 mycursor.execute(sql, val)
 mydb.commit()
@@ -198,19 +200,14 @@ for i in row_ranges:
         print("reading cell: i/j: ", str(j), "/",  str(i))
 
         cellContent = (str(sheet_ranges[str(j) + str(i)].value))
-
-        if j == 0:
-            cellContent = counter
-        
         val.append(cellContent.strip())
 
-    counter += 1
-
+    val[0] = counter
     print("val: ")
     print(val)
 
     try:
-        sql = "INSERT INTO " + str(dbNamePwsTbl) + " (index, category, entry, password, misc1, misc2, misc3) VALUES (%s, %s, %s, %s, %s, %s, %s)"
+        sql = "INSERT INTO " + str(dbNamePwsTbl) + " (idx, category, entry, password, misc1, misc2, misc3) VALUES (%s, %s, %s, %s, %s, %s, %s)"
         mycursor.execute(sql, val)
         mydb.commit()
         print(mycursor.rowcount, "record inserted.")
@@ -220,6 +217,8 @@ for i in row_ranges:
         msg = re.sub("\"|\'", "", msg)
         fp.write(str(i) + str(j) + ": " + str(msg) + '\n')
         insertErrors[str(i) + str(j)] =  msg
+
+    counter += 1
 
 print("Insertion errors: ")
 
