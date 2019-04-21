@@ -16,8 +16,9 @@ import os
 import sys
 import re
 import mysql.connector
-
+from openpyxl import *
 from cmnLib3 import *
+
 presenceDb = None
 presenceTable = None
 
@@ -30,6 +31,7 @@ dbNamePwsTbl=os.environ["MYSQL_DB_PWS_TABLE"]
 dbNameUser=os.environ["MYSQL_DB_USER"]
 mySqlServerIp=os.environ["MYSQL_SERVER_IP"]
 print("database name: ", dbNamePws)
+fileNameExcel='NUMBERS2010-97.xlsx'
 
 #	connect to mysql server.
 
@@ -130,3 +132,14 @@ myresult = mycursor.fetchall()
 
 for x in myresult:
  	print(x)
+
+
+''' NEW WORK BOOK
+wb = Workbook()
+# grab the active worksheet
+ws = wb.active
+'''
+
+wb = load_workbook(filename = fileNameExcel)
+sheet_ranges = wb['number']
+print(sheet_ranges['D18'].value)
