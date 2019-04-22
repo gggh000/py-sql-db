@@ -14,11 +14,13 @@ def printBarSingle():
 
 import os
 import sys
+from pySqlDbApi import *
 from cmnLib3 import *
 
 os.system("clear")
 
 printBarDouble()
 print("MAIN MENU")
+displayMenu(['Display tables','Select table','Quit'],'Main menu')
 printBarDouble()
 
