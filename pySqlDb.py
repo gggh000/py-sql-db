@@ -47,7 +47,7 @@ while prompt:
     print(dispatchMapMenu)
     a = dispatchMapMenu[prompt]
     a()
-
+    input("Press a key to continue.")
 
 
 
