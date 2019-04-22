@@ -25,11 +25,24 @@ def displayMenu(pMenu, pMenuTitle):
 
     printBarSingle()
 
-    counter = 0
+    counter = 1
 
     for x in pMenu:
         print(counter, ". ", x)
         counter += 1
     printBarSingle()
     
+def waitInput(pPrompt, pTimeout, pRange):
+    #print(pPrompt, ": ")
+
+    input = raw_input(pPrompt)
+
+def mainMenuDispTbls():
+    os.system("clear")
+    print("Display Tables")
+
+def mainMenuSelectTbl():
+    os.system("clear")
+    print("Select Table")
+
 
