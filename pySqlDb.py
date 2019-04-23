@@ -15,12 +15,16 @@ def printBarSingle():
 import os
 import sys
 import time
-from pySqlDbApi import *
-from cmnLib3 import *
+from pySqlDbApi import displayMenu
+from pySqlDbApi import mainMenuDispTbls
+from pySqlDbApi import mainMenuSelectTbl
 
 prompt = 1
 
 if __name__ == "__main__":
+    from cmnLib3 import *
+#   from pySqlDbApi import *
+
     dispatchMapMenu = {\
     1: mainMenuDispTbls, \
     2: mainMenuSelectTbl \

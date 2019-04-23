@@ -9,6 +9,20 @@ dbNameUser=os.environ["MYSQL_DB_USER"]
 mySqlServerIp=os.environ["MYSQL_SERVER_IP"]
 print("database name: ", dbNamePws)
 
+try:
+    mydb = mysql.connector.connect(
+      host=mySqlServerIp,
+      user=dbNameUser,
+      passwd="",
+      database=dbNamePws
+    )
+
+except Exception as msg:
+    print("Failed to connect to database: ", dbNamePws)
+    print(msg)
+    exit(1)
+print("OK")
+
 def displayTable(pCursor, pDb, pTable):
 	print("Selecting records and displaying tables from ", pDb)
 	pCursor.execute("SELECT * FROM " + pDb + "")
@@ -32,6 +46,7 @@ def printBarSingle():
     RETURN:
     None
 '''
+
 def displayMenu(pMenu, pMenuTitle):
     os.system("clear")
 
@@ -51,27 +66,6 @@ def displayMenu(pMenu, pMenuTitle):
 
     print("Connecting to database...")
 
-    try:
-        mydb = mysql.connector.connect(
-          host=mySqlServerIp,
-          user=dbNameUser,
-          passwd="",
-          database=dbNamePws
-        )
-
-    except Exception as msg:
-        print("Failed to connect to database: ", dbNamePws)
-        print(msg)
-        exit(1)
-    print("OK")
-
-    mycursor = mydb.cursor()
-    mycursor.execute("use " + dbNamePws)
-    mycursor.execute("SHOW TABLES")
-    
-    for x in mycursor:
-        print(x)
-
     return 0;
         
 def waitInput(pPrompt, pTimeout, pRange):
@@ -81,6 +75,13 @@ def waitInput(pPrompt, pTimeout, pRange):
 def mainMenuDispTbls():
     os.system("clear")
     print("Display Tables")
+    mycursor = mydb.cursor()
+    mycursor.execute("use " + dbNamePws)
+    mycursor.execute("SHOW TABLES")
+    
+    for x in mycursor:
+        print(x)
+
 
 def mainMenuSelectTbl():
     os.system("clear")
