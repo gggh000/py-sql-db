@@ -1,4 +1,5 @@
 import os
+import re
 
 #    Initialize variables.
 
@@ -8,6 +9,7 @@ dbNamePwsTbl=os.environ["MYSQL_DB_PWS_TABLE"]
 dbNameUser=os.environ["MYSQL_DB_USER"]
 mySqlServerIp=os.environ["MYSQL_SERVER_IP"]
 print("database name: ", dbNamePws)
+tableToUse=None
 
 try:
     mydb = mysql.connector.connect(
@@ -85,6 +87,51 @@ def mainMenuDispTbls():
 
 def mainMenuSelectTbl():
     os.system("clear")
-    print("Select Table")
+    print("Display Tables")
+    mycursor = mydb.cursor()
+    mycursor.execute("use " + dbNamePws)
+    mycursor.execute("SHOW TABLES")
+
+    counter = 1    
+
+    for x in mycursor:
+        print(counter, ": ", x)
+        
+    print("Select Table by entering an index: ")
+
+    for i in range(0, 10):
+        try:
+            select = int(input())
+        except Exception as msg:
+            print("Invalid input: ", select)
+            continue
+
+        if select > counter and select < 1:
+           print("Invalid choice, try again: ")
+        else:
+            break
+        
+    if select > counter and select < 1:
+        print("Invalid choice entered more than 10 times. Giving up...")
+        return None
+
+    print("You entered: ", select)
+    counter = 1
+
+    mycursor.execute("use " + dbNamePws)
+    mycursor.execute("SHOW TABLES")
+
+    for x in mycursor:
+        if counter == select:
+            print("Matchin table is found. Selecting this table...")
+            x = re.sub("'|\(|\)|,","", str(x)).strip()
+            print("use", str(x))
+            tableToUse = x
+            break
+
+    
+    
+                 
+
 
 
