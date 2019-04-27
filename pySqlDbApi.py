@@ -4,6 +4,7 @@ import re
 #    Initialize variables.
 
 import mysql.connector
+
 dbNamePws=os.environ["MYSQL_DB_PWS"]
 dbNamePwsTbl=os.environ["MYSQL_DB_PWS_TABLE"]
 dbNameUser=os.environ["MYSQL_DB_USER"]
@@ -54,6 +55,13 @@ def displayMenu(pMenu, pMenuTitle):
 
     printBarSingle()
 
+    if tableToUse:
+        print("Table selected: ", tableToUse)
+    else:
+        print("No table selected.")
+
+    printBarSingle()
+    
     if pMenuTitle:
         print("---", pMenuTitle.upper(), "---")
 
@@ -83,7 +91,6 @@ def mainMenuDispTbls():
     
     for x in mycursor:
         print(x)
-
 
 def mainMenuSelectTbl():
     os.system("clear")

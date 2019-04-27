@@ -18,6 +18,7 @@ import time
 from pySqlDbApi import displayMenu
 from pySqlDbApi import mainMenuDispTbls
 from pySqlDbApi import mainMenuSelectTbl
+from pySqlDbApi import *
 
 prompt = 1
 
@@ -54,8 +55,4 @@ if __name__ == "__main__":
         a = dispatchMapMenu[prompt]
         a()
         input("Press a key to continue.")
-    
-    
-    
-    
     
