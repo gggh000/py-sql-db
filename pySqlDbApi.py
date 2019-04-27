@@ -151,9 +151,14 @@ class mysqlManager:
     
         printBarSingle()
         print("Connecting to database...")
-        return 0;
+        return 0
             
-    
+    def mainMenuSearchForEntry(self):
+        return 0
+
+    def mainMenuInputNewEntry(self):
+        return 0
+
             
         
                      
