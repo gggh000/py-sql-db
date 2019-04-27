@@ -15,9 +15,6 @@ def printBarSingle():
 import os
 import sys
 import time
-from pySqlDbApi import displayMenu
-from pySqlDbApi import mainMenuDispTbls
-from pySqlDbApi import mainMenuSelectTbl
 from pySqlDbApi import *
 
 prompt = 1
@@ -26,9 +23,11 @@ if __name__ == "__main__":
     from cmnLib3 import *
 #   from pySqlDbApi import *
 
+    pwManager = mysqlManager()
+    
     dispatchMapMenu = {\
-    1: mainMenuDispTbls, \
-    2: mainMenuSelectTbl \
+    1: pwManager.mainMenuDispTbls, \
+    2: pwManager.mainMenuSelectTbl \
     }
     
     
@@ -37,7 +36,7 @@ if __name__ == "__main__":
     
         printBarDouble()
         print("MAIN MENU")
-        displayMenu(['Display tables','Select table','Quit'],'Main menu')
+        pwManager.displayMenu(['Display tables','Select table','Quit'],'Main menu')
         printBarDouble()
         
         try:
@@ -52,6 +51,7 @@ if __name__ == "__main__":
             time.sleep(5)
     
         print(dispatchMapMenu)
+
         a = dispatchMapMenu[prompt]
         a()
         input("Press a key to continue.")
