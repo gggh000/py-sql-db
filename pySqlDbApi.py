@@ -155,7 +155,6 @@ class mysqlManager:
             
     def mainMenuSearchForEntry(self):
         searchPattern = None
-
         counter = 0
 
         while searchPattern == None:
@@ -185,9 +184,19 @@ class mysqlManager:
         printBarSingle()
         input("Press a key to continue.")
         return 1
-    def mainMenuInputNewEntry(self):
-        return 0
 
-            
+    def mainMenuInputNewEntry(self):
+        inputFields = ["idx", "category", "entry", "password", "misc1", "misc2", "misc3"]
+        inputFieldValues = len(inputFields) * [None]
+        inputFieldValues[0] = -1
+
+        for i in range(1, len(inputFields)):
+            inputFieldValues[i] = input("Enter " + str(inputFields[i]) + " value: ")
+
+        sql = "INSERT INTO " + str(self.dbNamePwsTbl) + \
+            " (idx, category, entry, password, misc1, misc2, misc3) VALUES (%s, %s, %s, %s, %s, %s, %s)"
+        self.mycursor.execute(sql, inputFieldValues)
+        self.mydb.commit()
+        return 0
     
 #select * from raw where CONCAT(<col1>, <col2>, .... <colN>) like '%<pattern>%';
