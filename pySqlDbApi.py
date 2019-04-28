@@ -1,6 +1,8 @@
 import os
 import re
 import time
+from prettytable import *
+from tableWrapper import *
 
 #    Initialize variables.
 
@@ -49,7 +51,7 @@ class mysqlManager:
 
         print("OK, connected to database...")
         print(self.mydb)
-        time.sleep(2)
+        time.sleep(1)
 
     def displayTable(pCursor, pDb, pTable):
 	    print("Selecting records and displaying tables from ", pDb)
@@ -178,9 +180,33 @@ class mysqlManager:
         print("Search result for " + str(searchPattern))
         printBarSingle()
 
-        for x in self.mycursor:
-            print(x)
+        t = PrettyTable(['id','idx','category','entry','password','misc1','misc2','misc3'])
+        t.max_width = 15
 
+        for x in self.mycursor:
+            t.add_row(x)                        
+       
+        print(t)
+
+        '''
+        labels = (['id','idx','category','entry','password','misc1','misc2','misc3'])
+        tableData=[]
+
+        COL_WIDTH = 15
+
+        for x in self.mycursor:
+            x = list(x)
+            printBarSingle()
+            print(x)
+            print(type(x))
+        
+            for i in range(0, len(str(max(x, key=len))) - 1 / COL_WIDTH + 1, COL_WIDTH):
+                tableData.append(x[0], x[1], x[2], x[3], x[4], x[5], x[6], x[7])
+        
+        for i in tableData:
+            print(i)
+
+        '''
         printBarSingle()
         input("Press a key to continue.")
         return 1

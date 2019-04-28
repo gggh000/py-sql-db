@@ -50,9 +50,8 @@ if __name__ == "__main__":
                 print("Exiting...")
                 exit(0)
         except Exception as msg:
-            print("Error interpreting input...")
+            print("Error interpreting input, try again...")
             print(msg)
-            time.sleep(5)
     
         print(dispatchMapMenu)
 
