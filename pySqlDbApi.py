@@ -19,9 +19,9 @@ class mysqlManager:
     dbNamePwsTbl= None
     dbNameUser=None
     mySqlServerIp=None
-    tableToUse=None
     debug = 1
     mydb = None
+    mycursor = None
 
     def __init__(self):
         if self.debug:
@@ -76,23 +76,23 @@ class mysqlManager:
     def mainMenuDispTbls(self):
         os.system("clear")
         print("Display Tables")
-        mycursor = mydb.cursor()
-        mycursor.execute("use " + self.dbNamePws)
-        mycursor.execute("SHOW TABLES")
+        self.mycursor = self.mydb.cursor()
+        self.mycursor.execute("use " + self.dbNamePws)
+        self.mycursor.execute("SHOW TABLES")
         
-        for x in mycursor:
+        for x in self.mycursor:
             print(x)
     
     def mainMenuSelectTbl(self):
         os.system("clear")
         print("Display Tables")
-        mycursor = self.mydb.cursor()
-        mycursor.execute("use " + self.dbNamePws)
-        mycursor.execute("SHOW TABLES")
+        self.mycursor = self.mydb.cursor()
+        self.mycursor.execute("use " + self.dbNamePws)
+        self.mycursor.execute("SHOW TABLES")
     
         counter = 1    
     
-        for x in mycursor:
+        for x in self.mycursor:
             print(counter, ": ", x)
             
         print("Select Table by entering an index: ")
@@ -116,10 +116,10 @@ class mysqlManager:
         print("You entered: ", select)
         counter = 1
     
-        mycursor.execute("use " + self.dbNamePws)
-        mycursor.execute("SHOW TABLES")
+        self.mycursor.execute("use " + self.dbNamePws)
+        self.mycursor.execute("SHOW TABLES")
     
-        for x in mycursor:
+        for x in self.mycursor:
             if counter == select:
                 print("Matchin table is found. Selecting this table...")
                 x = re.sub("'|\(|\)|,","", str(x)).strip()
@@ -154,14 +154,40 @@ class mysqlManager:
         return 0
             
     def mainMenuSearchForEntry(self):
-        return 0
+        searchPattern = None
 
+        counter = 0
+
+        while searchPattern == None:
+            if counter > 5:
+                print("Empty search value entered too many times. Giving up.")
+                return None                
+
+            searchPattern = input("Input your pattern to search (all columns are searched):").strip()
+            if searchPattern == None:
+                print("Nothing is entered. Try again:")
+
+            counter += 1
+
+        self.mycursor = self.mydb.cursor()
+        self.mycursor.execute("use " + self.dbNamePws)
+        print("select * from " + str(self.tableToUse) + " where CONCAT(category,entry,password,misc1,misc2,misc3) like '%" + searchPattern + "%';")
+        time.sleep(3)
+        self.mycursor.execute("select * from " + str(self.tableToUse) + " where CONCAT(category,entry,password,misc1,misc2,misc3) like '%" + searchPattern + "%';")
+
+        printBarSingle()
+        print("Search result for " + str(searchPattern))
+        printBarSingle()
+
+        for x in self.mycursor:
+            print(x)
+
+        printBarSingle()
+        input("Press a key to continue.")
+        return 1
     def mainMenuInputNewEntry(self):
         return 0
 
             
-        
-                     
     
-    
-    
+#select * from raw where CONCAT(<col1>, <col2>, .... <colN>) like '%<pattern>%';
