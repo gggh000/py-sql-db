@@ -14,7 +14,13 @@ def printBarDouble():
 def printBarSingle():
     print("-------------------------------------------------")
 
+#   class for managing the all aspects of mySql interaction from python. This class
+#   heavily uses and depends on the mysql.connector but also adds additional layer of 
+#   API which mainly for processing menu item choices. 
+
 class mysqlManager:
+
+    #   Class member variable definitions.
 
     tableToUse = None
     dbNamePws= None
@@ -24,6 +30,8 @@ class mysqlManager:
     debug = 1
     mydb = None
     mycursor = None
+
+    #   Class constructor, initialize member variables.
 
     def __init__(self):
         if self.debug:
@@ -35,6 +43,8 @@ class mysqlManager:
         self.mySqlServerIp=os.environ["MYSQL_SERVER_IP"]
         print("database name: ", self.dbNamePws)
         self.tableToUse=None
+
+        #   Connect to database as part of initialization. If connection fails, quit immediately.
 
         try:
             self.mydb = mysql.connector.connect(
@@ -53,6 +63,17 @@ class mysqlManager:
         print(self.mydb)
         time.sleep(1)
 
+    '''
+    Display selected table. The tables to display under pDb database.
+    If no tables are present, it will quit silently.
+    INPUT:
+        pCursor - mysql database cursor object.
+        pDb - database from which the tables are to be displayed.
+        pTable - unnecessary input, delete after a while! 
+    OUTPUT:
+        None
+    '''
+
     def displayTable(pCursor, pDb, pTable):
 	    print("Selecting records and displaying tables from ", pDb)
 	    pCursor.execute("SELECT * FROM " + pDb + "")
@@ -62,19 +83,27 @@ class mysqlManager:
         	    print(x)
     
     '''
-        Display a menu. 
-        INPUT:  
-        pMenu - menu to be display in string array format.
-        pMenuTitle - Title of the menu to be displayed.
-    
-        RETURN:
-        None
+    Waits for input from user.
+    INPUT:  
+        pPrompt - tells user what input is expected
+        pTimeOut - timeout of wait (not implemented yet)
+        pRange - accepted range of values (not implemeted yet)    
+    OUTPUT:
+        input - user's input that are entered.
     '''
     
     def waitInput(self, pPrompt, pTimeout, pRange):
         input = raw_input(pPrompt)
         return input
     
+    '''
+    Display all tables in database. Database selected is defined in self.dbNamePws.
+    INPUT:
+        None
+    OUTPUT:
+        None
+    '''
+
     def mainMenuDispTbls(self):
         os.system("clear")
         print("Display Tables")
@@ -85,21 +114,32 @@ class mysqlManager:
         for x in self.mycursor:
             print(x)
     
+    '''
+    Selects one of the table as active, as a result, self.tableToUse is updated with active, selected table. 
+    INPUT:
+        None
+    OUTPUT:
+        None
+    '''
+
     def mainMenuSelectTbl(self):
         os.system("clear")
         print("Display Tables")
         self.mycursor = self.mydb.cursor()
         self.mycursor.execute("use " + self.dbNamePws)
         self.mycursor.execute("SHOW TABLES")
-    
+        INPUT_RETRY_MAX = 10
+
         counter = 1    
     
         for x in self.mycursor:
             print(counter, ": ", x)
             
         print("Select Table by entering an index: ")
+
+        #   Prompt use for INPUT_RETRY_MAX times. After that give up.
     
-        for i in range(0, 10):
+        for i in range(0, INPUT_RETRY_MAX):
             try:
                 select = int(input())
             except Exception as msg:
@@ -110,13 +150,15 @@ class mysqlManager:
                print("Invalid choice, try again: ")
             else:
                 break
-            
+
         if select > counter and select < 1:
-            print("Invalid choice entered more than 10 times. Giving up...")
+            print("Invalid choice entered more than ", INPUT_RETRY_MAX, " times. Giving up...")
             return None
     
         print("You entered: ", select)
         counter = 1
+
+        #   Iterate through the tables for matching index and if matches, update the tableToUse.
     
         self.mycursor.execute("use " + self.dbNamePws)
         self.mycursor.execute("SHOW TABLES")
