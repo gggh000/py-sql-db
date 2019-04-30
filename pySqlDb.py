@@ -36,12 +36,16 @@ if __name__ == "__main__":
         if not pwManager.tableToUse:
             pwManager.displayMenu(['Display tables','Select table','Quit'],'Main menu')
         else:
-            pwManager.displayMenu(['Display tables','Select table', 'Search for an entry', 'Input new entry', 'Quit'],'Main menu')
+            pwManager.displayMenu(['Display tables','Select table', \
+            'Search for an entry', 'Input new entry', 'Edit entry', 'Delete entry', 'Quit'],\
+            'Main menu')
 
         dispatchMapMenu[3] = pwManager.mainMenuSearchForEntry
         dispatchMapMenu[4] = pwManager.mainMenuInputNewEntry
+        dispatchMapMenu[5] = pwManager.mainMenuEditEntry
+        dispatchMapMenu[6] = pwManager.mainMenuDeleteEntry
         printBarDouble()
-        EXIT_MENU = 5
+        EXIT_MENU = 7
         
         try:
             prompt = int(input("Select from menu above...\n"))

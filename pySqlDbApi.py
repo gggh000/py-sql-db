@@ -75,12 +75,12 @@ class mysqlManager:
     '''
 
     def displayTable(pCursor, pDb, pTable):
-	    print("Selecting records and displaying tables from ", pDb)
-	    pCursor.execute("SELECT * FROM " + pDb + "")
-	    myresult = pCursor.fetchall()
-	    
-	    for x in myresult:
-        	    print(x)
+        print("Selecting records and displaying tables from ", pDb)
+        pCursor.execute("SELECT * FROM " + pDb + "")
+        myresult = pCursor.fetchall()
+        
+        for x in myresult:
+                print(x)
     
     '''
     Waits for input from user.
@@ -266,5 +266,62 @@ class mysqlManager:
         self.mycursor.execute(sql, inputFieldValues)
         self.mydb.commit()
         return 0
+
+    def mainMenuEditEntry(self):
+        '''
+        inputFields = ["idx", "category", "entry", "password", "misc1", "misc2", "misc3"]
+        inputFieldValues = len(inputFields) * [None]
+        inputFieldValues[0] = -1
+
+        for i in range(1, len(inputFields)):
+            inputFieldValues[i] = input("Enter " + str(inputFields[i]) + " value: ")
+
+        sql = "INSERT INTO " + str(self.dbNamePwsTbl) + \
+            " (idx, category, entry, password, misc1, misc2, misc3) VALUES (%s, %s, %s, %s, %s, %s, %s)"
+
+        self.mycursor.execute(sql, inputFieldValues)
+        self.mydb.commit()
+        '''
+        print("Not implemented.")
+        return 0
+
+    def mainMenuDeleteEntry(self):
+        '''
+        inputFields = ["idx", "category", "entry", "password", "misc1", "misc2", "misc3"]
+        inputFieldValues = len(inputFields) * [None]
+        inputFieldValues[0] = -1
+
+        for i in range(1, len(inputFields)):
+            inputFieldValues[i] = input("Enter " + str(inputFields[i]) + " value: ")
+
+        sql = "INSERT INTO " + str(self.dbNamePwsTbl) + \
+            " (idx, category, entry, password, misc1, misc2, misc3) VALUES (%s, %s, %s, %s, %s, %s, %s)"
+        '''
+        idx = input("Enter the ID of the entry to delete: ")
+        self.mycursor = self.mydb.cursor()
+        #self.mycursor.execute("use " + self.dbNamePws)
+        print("SELECT * FROM " + str(self.tableToUse) + " WHERE id = " + str(idx).strip())
+        self.mycursor.execute("SELECT * FROM " + str(self.tableToUse) + " WHERE id = " + str(idx).strip())
+        print("Following row(s) will be deleted: ")
+
+        t = PrettyTable(['id','idx','category','entry','password','misc1','misc2','misc3'])
+        t.max_width = 15
+
+        for x in self.mycursor:
+            t.add_row(x)
+
+        print(t)
+        for i in range(0, 3):
+            choice = input("Are you sure (Y/N)?: ")
+            
+            if choice == 'Y' or choice == 'y':
+                print("Deleting..")
+                print("DELETE * FROM " + str(self.tableToUse) + " WHERE id = " + str(idx))
+                self.mycursor.execute("DELETE FROM " + str(self.tableToUse) + " WHERE id = " + str(idx))
+                print("Done.")
+                break
+            else:
+                print("Aborting, not deleted.")
+
+        return 0
     
-#select * from raw where CONCAT(<col1>, <col2>, .... <colN>) like '%<pattern>%';
