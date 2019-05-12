@@ -133,8 +133,6 @@ class mysqlManager:
         self.mycursor.execute("show tables")
 
         if pTableName:
-            self.mycursor.execute("SHOW TABLES")
-        
             for x in self.mycursor:
                 x = re.sub("'|\(|\)|,","", str(x)).strip()
 
