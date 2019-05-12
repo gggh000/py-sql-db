@@ -55,7 +55,14 @@ fileNameExcel='NUMBERS-EXPORT.xlsx'
 
 pwManager = mysqlManager()
 
-pwManager.mainMenuSelectTbl()
+try:
+    if sys.argv[1]:
+        print("sys.argv[1]: " + str(sys.argv[1]))
+        pwManager.mainMenuSelectTbl(sys.argv[1])
+except Exception as msg:
+    print("Manually select table...")
+    print(msg)
+    pwManager.mainMenuSelectTbl()
 
 #   declare excel output to export to.
 

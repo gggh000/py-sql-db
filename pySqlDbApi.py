@@ -122,12 +122,31 @@ class mysqlManager:
         None
     '''
 
-    def mainMenuSelectTbl(self):
+    #   Selects table from database.
+    # 
+
+    def mainMenuSelectTbl(self, pTableName = None):
         os.system("clear")
         print("Display Tables")
         self.mycursor = self.mydb.cursor()
         self.mycursor.execute("use " + self.dbNamePws)
-        self.mycursor.execute("SHOW TABLES")
+        self.mycursor.execute("show tables")
+
+        if pTableName:
+            self.mycursor.execute("SHOW TABLES")
+        
+            for x in self.mycursor:
+                x = re.sub("'|\(|\)|,","", str(x)).strip()
+
+                if x == pTableName:
+                    print("use", str(x))
+                    self.tableToUse = x
+                    break
+
+                self.mycursor.execute("use " + str(pTableName))
+                print("Using table: ", str(self.tableToUse))
+            return 0
+
         INPUT_RETRY_MAX = 10
 
         counter = 1    
